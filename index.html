@@ -135,7 +135,6 @@ html.dark .i-moon { display: none; }
 .btn.reset-compact { min-height: 32px; padding: 6px 9px; font-size: 11px; line-height: 1; border-radius: 9px; justify-self: end; width: auto; }
 .guest2-wrap { display: none; }
 .guest2-wrap.visible { display: block; }
-.double-room-note { margin: -4px 0 8px; color: var(--muted); font-size: 11px; font-weight: 650; }
 
 .occ { padding: 14px 16px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
 .occ-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -459,6 +458,16 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
             .mhead { padding-top: 30px; }
             .mhead h1 { font-size: 32px; }
         }
+        @media (max-width: 639px) {
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .stats .stat[data-status="all"] {
+                grid-column: 1 / -1;
+                order: 5;
+                width: 100%;
+                justify-content: center;
+                min-height: 48px;
+            }
+        }
         @media (min-width: 640px) and (max-width: 1023px) { .main { padding: 0 24px 60px; } .rail { padding-left: 24px; padding-right: 24px; } }
     </style>
 </head>
@@ -569,7 +578,6 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
                 <div id="guest2Wrap" class="guest2-wrap">
                     <label class="lbl" for="modalGuest2">Guest 2</label>
                     <input type="text" id="modalGuest2" class="field" placeholder="Second guest name" autocomplete="off">
-                    <p class="double-room-note">Double room · maximum 2 guests</p>
                 </div>
                 <div class="two">
                     <div><label class="lbl" for="modalCheckIn">Check-in</label><input type="datetime-local" id="modalCheckIn" class="field"></div>
