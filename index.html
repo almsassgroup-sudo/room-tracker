@@ -382,27 +382,24 @@
             *, *::before, *::after { animation: none !important; transition: none !important; }
         }
 
-        /* NORDIC · Scandinavian minimal */
+        /* NIGHTSHIFT · premium dark */
 
-        /* OPTION 2 — NORDIC: warm white + forest green */
-        :root { --bg:#f4f5f0; --surface:#fffefa; --surface-rgb:255,254,250; --surface-2:#f0f2eb; --text:#202b27; --muted:#78847d; --muted-rgb:120,132,125; --line:rgba(35,58,47,.12); --brand:#1f3d30; --accent:#277455; --corridor:#e9eee7; --shadow:0 5px 20px rgba(31,61,48,.06); --shadow-hover:0 12px 28px rgba(31,61,48,.12); --glow-1:rgba(39,116,85,.08); --glow-2:rgba(199,163,107,.10); }
-        html.dark { --bg:#17211c; --surface:#202d26; --surface-rgb:32,45,38; --surface-2:#29382f; --text:#edf3ed; --muted:#a7b6aa; --line:rgba(232,241,232,.12); --brand:#edf3ed; --accent:#8cc8a6; --corridor:#29382f; }
-        body { background-image:radial-gradient(700px 360px at 85% -15%,rgba(39,116,85,.09),transparent 65%); }
-        .topbar { background:rgba(255,254,250,.9); border-bottom:1px solid var(--line); backdrop-filter:blur(16px); }
-        html.dark .topbar { background:rgba(25,37,30,.92); }
-        .hero h1 { letter-spacing:-.06em; font-size:clamp(28px,4vw,38px); }
-        .panel,.stat,.lcard,.login-card { border:1px solid var(--line); box-shadow:var(--shadow); }
-        .panel { background:var(--surface); border-radius:22px; }
-        .stat { background:var(--surface); border-radius:14px; }
-        .room,.lcard { border-radius:14px; }
-        .btn.solid { background:#245e45; }
-        html.dark .btn.solid { background:#367c5b; }
-        .capacity-tag { background:rgba(39,116,85,.10); color:#277455; }
-        html.dark .capacity-tag { color:#9bd7b1; }
-        .brand:before { content:'R'; display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:#245e45; color:#fffefa; font-size:15px; font-weight:800; }
+        /* OPTION 1 — NIGHTSHIFT: premium graphite + electric blue */
+        :root { --bg:#101722; --surface:#182333; --surface-rgb:24,35,51; --surface-2:#202e40; --text:#edf3fb; --muted:#a0aec0; --muted-rgb:160,174,192; --line:rgba(220,232,248,.11); --brand:#e8f0fb; --accent:#65a5ff; --corridor:#202c3d; --shadow:0 8px 26px rgba(0,0,0,.20); --shadow-hover:0 18px 42px rgba(0,0,0,.32); --glow-1:rgba(75,145,255,.18); --glow-2:rgba(20,184,166,.08); }
+        html.dark { --bg:#0b111b; --surface:#121d2b; --surface-rgb:18,29,43; --surface-2:#1a293a; --text:#edf4ff; --muted:#9aabc0; --line:rgba(220,232,248,.10); --brand:#edf4ff; --accent:#78b4ff; --corridor:#1a293a; }
+        body { background-image:radial-gradient(800px 400px at 90% -10%,rgba(66,133,244,.18),transparent 65%),linear-gradient(180deg,#101722,#0d1420 65%); }
+        .topbar { background:rgba(14,22,33,.88); border-bottom:1px solid rgba(255,255,255,.08); backdrop-filter:blur(18px); }
+        .hero h1 { letter-spacing:-.055em; font-size:clamp(28px,4vw,40px); }
+        .panel,.stat,.lcard,.login-card { border:1px solid rgba(255,255,255,.09); box-shadow:0 12px 34px rgba(0,0,0,.18); }
+        .panel { background:linear-gradient(145deg,#1b2a3d,#152131); }
+        .stat { background:linear-gradient(145deg,#1c2b3e,#172333); border-radius:17px; }
+        .room { border-radius:16px; }
+        .btn.solid { background:linear-gradient(135deg,#4d91f5,#2866d9); }
+        .capacity-tag { background:rgba(101,165,255,.15); color:#8fc1ff; }
+        .login-card { background:linear-gradient(145deg,#1b2a3d,#121d2b); }
+        .brand:before { content:'R'; display:grid; place-items:center; width:30px; height:30px; border-radius:9px; background:linear-gradient(145deg,#70b3ff,#2866d9); color:#081321; font-size:16px; font-weight:900; box-shadow:0 5px 14px rgba(47,107,255,.3); }
         .brand { gap:12px; }
-        .entrance div { background:#245e45; box-shadow:0 8px 18px rgba(36,94,69,.18); }
-        .opt.on { background:rgba(39,116,85,.12); }
+        .entrance div { background:linear-gradient(135deg,#4d91f5,#2866d9); }
     
         /* Double-room details and clear capacity cues */
         .guest-fields { display: grid; grid-template-columns: 1fr; gap: 0 12px; }
@@ -413,7 +410,7 @@
         @media (min-width: 480px) { .guest-fields { grid-template-columns: repeat(2, minmax(0,1fr)); } }
     </style>
 </head>
-<body data-design="2">
+<body data-design="1">
 
     <!-- Login (shared team password) -->
     <div id="loginOverlay" class="login">
