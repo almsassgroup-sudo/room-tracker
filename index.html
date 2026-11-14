@@ -382,29 +382,27 @@
             *, *::before, *::after { animation: none !important; transition: none !important; }
         }
 
-        /* ATLAS · operations dashboard */
+        /* NORDIC · Scandinavian minimal */
 
-        /* OPTION 3 — ATLAS: crisp operations dashboard, ink + teal */
-        :root { --bg:#eaf0f4; --surface:#ffffff; --surface-rgb:255,255,255; --surface-2:#f2f6f8; --text:#172b3b; --muted:#647b8b; --muted-rgb:100,123,139; --line:rgba(23,55,76,.12); --brand:#12354a; --accent:#087f8c; --corridor:#e1ebef; --shadow:0 3px 14px rgba(18,53,74,.07); --shadow-hover:0 10px 26px rgba(18,53,74,.13); --glow-1:rgba(8,127,140,.10); --glow-2:rgba(44,112,170,.08); }
-        html.dark { --bg:#101c26; --surface:#192a37; --surface-rgb:25,42,55; --surface-2:#223746; --text:#edf5f8; --muted:#9bb0bd; --line:rgba(220,240,247,.11); --brand:#edf5f8; --accent:#53c2c6; --corridor:#223746; }
-        body { background-image:linear-gradient(135deg,rgba(8,127,140,.05),transparent 42%),radial-gradient(800px 400px at 100% 0%,rgba(44,112,170,.10),transparent 62%); }
-        .topbar { background:var(--brand); border-bottom:0; color:#fff; }
-        .topbar .iconbtn { color:#fff; }
-        .brand img { filter:brightness(0) invert(1); }
-        .hero { align-items:flex-end; }
-        .hero h1 { letter-spacing:-.045em; font-size:clamp(28px,4vw,38px); }
+        /* OPTION 2 — NORDIC: warm white + forest green */
+        :root { --bg:#f4f5f0; --surface:#fffefa; --surface-rgb:255,254,250; --surface-2:#f0f2eb; --text:#202b27; --muted:#78847d; --muted-rgb:120,132,125; --line:rgba(35,58,47,.12); --brand:#1f3d30; --accent:#277455; --corridor:#e9eee7; --shadow:0 5px 20px rgba(31,61,48,.06); --shadow-hover:0 12px 28px rgba(31,61,48,.12); --glow-1:rgba(39,116,85,.08); --glow-2:rgba(199,163,107,.10); }
+        html.dark { --bg:#17211c; --surface:#202d26; --surface-rgb:32,45,38; --surface-2:#29382f; --text:#edf3ed; --muted:#a7b6aa; --line:rgba(232,241,232,.12); --brand:#edf3ed; --accent:#8cc8a6; --corridor:#29382f; }
+        body { background-image:radial-gradient(700px 360px at 85% -15%,rgba(39,116,85,.09),transparent 65%); }
+        .topbar { background:rgba(255,254,250,.9); border-bottom:1px solid var(--line); backdrop-filter:blur(16px); }
+        html.dark .topbar { background:rgba(25,37,30,.92); }
+        .hero h1 { letter-spacing:-.06em; font-size:clamp(28px,4vw,38px); }
         .panel,.stat,.lcard,.login-card { border:1px solid var(--line); box-shadow:var(--shadow); }
-        .panel { background:var(--surface); border-radius:18px; }
-        .stats { gap:10px; }
-        .stat { border-radius:12px; background:var(--surface); }
-        .room,.lcard { border-radius:12px; }
-        .btn.solid { background:#087f8c; }
-        .capacity-tag { background:rgba(8,127,140,.10); color:#087f8c; }
-        html.dark .capacity-tag { color:#6ed4d5; }
-        .brand:before { content:'RT'; display:grid; place-items:center; width:34px; height:30px; border-radius:8px 8px 8px 2px; background:#087f8c; color:white; font-size:10px; letter-spacing:.04em; font-weight:900; }
+        .panel { background:var(--surface); border-radius:22px; }
+        .stat { background:var(--surface); border-radius:14px; }
+        .room,.lcard { border-radius:14px; }
+        .btn.solid { background:#245e45; }
+        html.dark .btn.solid { background:#367c5b; }
+        .capacity-tag { background:rgba(39,116,85,.10); color:#277455; }
+        html.dark .capacity-tag { color:#9bd7b1; }
+        .brand:before { content:'R'; display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:#245e45; color:#fffefa; font-size:15px; font-weight:800; }
         .brand { gap:12px; }
-        .entrance div { background:#087f8c; }
-        .section-title { letter-spacing:.16em; }
+        .entrance div { background:#245e45; box-shadow:0 8px 18px rgba(36,94,69,.18); }
+        .opt.on { background:rgba(39,116,85,.12); }
     
         /* Double-room details and clear capacity cues */
         .guest-fields { display: grid; grid-template-columns: 1fr; gap: 0 12px; }
@@ -415,7 +413,7 @@
         @media (min-width: 480px) { .guest-fields { grid-template-columns: repeat(2, minmax(0,1fr)); } }
     </style>
 </head>
-<body data-design="3">
+<body data-design="2">
 
     <!-- Login (shared team password) -->
     <div id="loginOverlay" class="login">
