@@ -130,6 +130,12 @@ html.dark .i-moon { display: none; }
 .stat .n { display: block; font-family: var(--font-display); font-size: 24px; font-weight: 800; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
 .stat .l { display: block; margin-top: 3px; font-size: 11px; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stat.active { border-color: rgb(var(--c)); box-shadow: 0 0 0 3px rgba(var(--c), .18), var(--shadow); }
+.stat[data-status="all"] { --c: 99, 102, 241; }
+.stat[data-status="all"] .dot { background: rgba(var(--c), .14); }
+.btn.reset-compact { min-height: 32px; padding: 6px 9px; font-size: 11px; line-height: 1; border-radius: 9px; justify-self: end; width: auto; }
+.guest2-wrap { display: none; }
+.guest2-wrap.visible { display: block; }
+.double-room-note { margin: -4px 0 8px; color: var(--muted); font-size: 11px; font-weight: 650; }
 
 .occ { padding: 14px 16px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
 .occ-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -491,6 +497,7 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
             </nav>
             <div class="occ"><div class="occ-top"><span>Occupancy</span><b class="occPct">0%</b></div><div class="occ-bar"><i class="occBar"></i></div><small class="occSub">0 of 16 rooms occupied</small></div>
             <section class="stats">
+            <button class="stat" data-status="all" onclick="setStatusFilter('all')" id="stat-all"><span class="dot">✦</span><span><span class="n" id="statAll">16</span><span class="l">All</span></span></button>
             <button class="stat" data-status="free" onclick="setStatusFilter('free')" id="stat-free"><span class="dot">✓</span><span><span class="n" id="statFree">0</span><span class="l">Available</span></span></button>
             <button class="stat" data-status="cleaning" onclick="setStatusFilter('cleaning')" id="stat-cleaning"><span class="dot">🧹</span><span><span class="n" id="statCleaning">0</span><span class="l">Needs Cleaning</span></span></button>
             <button class="stat" data-status="busy" onclick="setStatusFilter('busy')" id="stat-busy"><span class="dot">👤</span><span><span class="n" id="statBusy">0</span><span class="l">Occupied</span></span></button>
@@ -512,7 +519,7 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
             </label>
             <div class="actions">
                 <button class="btn good" onclick="massMarkFree()" title="Set every 'Needs Cleaning' room to Available">✓ Cleaning done</button>
-                <button class="btn danger" onclick="openConfirmResetModal()">↺ Reset all</button>
+                <button class="btn danger reset-compact" onclick="openConfirmResetModal()">↺ Reset all</button>
                 <button id="clearFilter" class="clear-filter hidden" onclick="setStatusFilter('all')">Clear filter ✕</button>
             </div>
         </section>
@@ -559,6 +566,11 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
                 </div>
                 <label class="lbl" for="modalGuest">Guest</label>
                 <input type="text" id="modalGuest" class="field" placeholder="e.g. John Doe" autocomplete="off">
+                <div id="guest2Wrap" class="guest2-wrap">
+                    <label class="lbl" for="modalGuest2">Guest 2</label>
+                    <input type="text" id="modalGuest2" class="field" placeholder="Second guest name" autocomplete="off">
+                    <p class="double-room-note">Double room · maximum 2 guests</p>
+                </div>
                 <div class="two">
                     <div><label class="lbl" for="modalCheckIn">Check-in</label><input type="datetime-local" id="modalCheckIn" class="field"></div>
                     <div><label class="lbl" for="modalCheckOut">Check-out</label><input type="datetime-local" id="modalCheckOut" class="field"></div>
@@ -650,7 +662,7 @@ function getDefaultRooms() {
     LAYOUT_PAIRS.forEach(p => { list.push(p.left); list.push(p.right); });
     return list.map(item => ({
         id: item.id, name: item.name, isService: item.isService,
-        status: 'free', guest: '', checkIn: '', checkOut: '', note: '', updatedAt: '', auto: false, by: '', log: []
+        status: 'free', guest: '', guest2: '', checkIn: '', checkOut: '', note: '', updatedAt: '', auto: false, by: '', log: []
     }));
 }
 
@@ -662,6 +674,9 @@ const toLocalInput = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d
 const parseDT = (s) => { if (!s) return null; const d = new Date(s); return isNaN(d) ? null : d; };
 const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 const residential = () => window.AppState.rooms.filter(r => !r.isService).sort((a, b) => Number(a.id) - Number(b.id));
+const isDoubleRoom = (room) => ['17', '19'].includes(String(room.id));
+const roomLabel = (room) => `${room.name}${isDoubleRoom(room) ? 'D' : ''}`;
+const guestLabel = (room) => [room.guest, room.guest2].filter(Boolean).join(' / ');
 
 function fmtDT(s) {
     const d = s instanceof Date ? s : parseDT(s);
@@ -758,7 +773,7 @@ function persistRooms(changed) {
     });
 }
 
-const snapKeys = (r) => JSON.stringify([r.status, r.guest, r.checkIn, r.checkOut, r.note]);
+const snapKeys = (r) => JSON.stringify([r.status, r.guest, r.guest2 || '', r.checkIn, r.checkOut, r.note]);
 
 // Called by the Firebase module whenever data changes on the server
 window.applyRemoteRooms = function (remote) {
@@ -821,7 +836,7 @@ function undoRooms(snaps) {
 // After cleaning, forget the departed guest — unless a future arrival was already entered
 function clearIfDeparted(room) {
     const ci = parseDT(room.checkIn);
-    if (!(ci && ci > new Date())) { room.guest = ''; room.checkIn = ''; room.checkOut = ''; }
+    if (!(ci && ci > new Date())) { room.guest = ''; room.guest2 = ''; room.checkIn = ''; room.checkOut = ''; }
 }
 
 function applyStatusChange(room, status) {
@@ -842,7 +857,7 @@ function quickAction(ev, id) {
 
     const snap = snapshot(room);
     const target = room.status === 'busy' ? 'cleaning' : 'free';
-    const msg = room.status === 'busy' ? `Room ${room.name} checked out` : room.status === 'cleaning' ? `Room ${room.name} is clean` : `Room ${room.name} is available`;
+    const msg = room.status === 'busy' ? `Room ${roomLabel(room)} checked out` : room.status === 'cleaning' ? `Room ${roomLabel(room)} is clean` : `Room ${roomLabel(room)} is available`;
     applyStatusChange(room, target);
     persistRooms([room]);
     render();
@@ -866,6 +881,7 @@ function matches(room) {
     if (searchQuery) {
         return (room.name || '').toLowerCase().includes(searchQuery)
             || (room.guest || '').toLowerCase().includes(searchQuery)
+            || (room.guest2 || '').toLowerCase().includes(searchQuery)
             || (room.note || '').toLowerCase().includes(searchQuery);
     }
     return true;
@@ -873,7 +889,7 @@ function matches(room) {
 function onSearchInput(e) { window.AppState.searchQuery = e.target.value.toLowerCase().trim(); render(); }
 function setStatusFilter(status) {
     const st = window.AppState;
-    st.filter = (status !== 'all' && st.filter === status) ? 'all' : status;     // tap again to clear
+    st.filter = status === 'all' ? 'all' : ((st.filter === status) ? 'all' : status); // All clears every status filter
     if (st.view === 'today') setView('plan'); else render();
 }
 function setView(v) {
@@ -904,7 +920,7 @@ const flashCls = (room) => window.AppState.flash.has(room.id) ? ' flash' : '';
 function planTile(room, side) {
     const s = room.status, cfg = STATUS[s], qa = QA[s];
     let l1 = '', l2 = '';
-    if (s === 'busy') { l1 = room.guest || ''; l2 = room.checkOut ? 'Out ' + fmtDT(room.checkOut) : (room.note || ''); }
+    if (s === 'busy') { l1 = guestLabel(room); l2 = room.checkOut ? 'Out ' + fmtDT(room.checkOut) : (room.note || ''); }
     else if (upcomingArrival(room)) { l1 = room.guest || 'Reserved'; l2 = 'In ' + fmtDT(room.checkIn); }
     else { l1 = room.note || ''; }
 
@@ -913,8 +929,8 @@ function planTile(room, side) {
     el.dataset.status = s;
     el.setAttribute('aria-label', `Room ${room.name}: ${cfg.title}`);
     el.innerHTML = `
-        <div class="r-top"><span class="r-num">${esc(room.name)}</span>
-            <button type="button" class="qa" title="${qa.label}" aria-label="Room ${esc(room.name)}: ${qa.label}" onclick="quickAction(event,'${room.id}')">${qa.icon}</button></div>
+        <div class="r-top"><span class="r-num">${esc(roomLabel(room))}</span>
+            <button type="button" class="qa" title="${qa.label}" aria-label="Room ${esc(roomLabel(room))}: ${qa.label}" onclick="quickAction(event,'${room.id}')">${qa.icon}</button></div>
         <div class="r-bot">
             <span class="pill">${cfg.short}</span>
             ${l1 ? `<div class="r-line">${esc(l1)}</div>` : ''}
@@ -945,14 +961,14 @@ function listCard(room) {
     let body;
     if (s === 'busy') {
         body = `<dl class="lbody">
-            <div class="row"><dt>Guest</dt><dd>${esc(room.guest) || '—'}</dd></div>
+            <div class="row"><dt>Guest</dt><dd>${esc(guestLabel(room)) || '—'}</dd></div>
             <div class="row"><dt>Check-in</dt><dd>${fmtDT(room.checkIn) || '—'}</dd></div>
             <div class="row"><dt>Check-out</dt><dd>${fmtDT(room.checkOut) || '—'}</dd></div>
         </dl>`;
     } else if (upcomingArrival(room)) {
         body = `<dl class="lbody">
             <div class="row"><dt>Arriving</dt><dd>${fmtDT(room.checkIn)}</dd></div>
-            <div class="row"><dt>Guest</dt><dd>${esc(room.guest) || '—'}</dd></div>
+            <div class="row"><dt>Guest</dt><dd>${esc(guestLabel(room)) || '—'}</dd></div>
         </dl>`;
     } else if (s === 'cleaning' && room.auto) {
         body = `<p class="lhint">Switched automatically at check-out</p>`;
@@ -962,8 +978,8 @@ function listCard(room) {
 
     el.innerHTML = `
         <div class="lhead">
-            <div class="lnum">${esc(room.name)}</div>
-            <div class="ltitle"><b>Room ${esc(room.name)}</b><span class="pill">${cfg.title}</span></div>
+            <div class="lnum">${esc(roomLabel(room))}</div>
+            <div class="ltitle"><b>Room ${esc(roomLabel(room))}</b><span class="pill">${cfg.title}</span></div>
         </div>
         ${body}
         ${room.note ? `<div class="lnote">${esc(room.note)}</div>` : ''}
@@ -975,10 +991,12 @@ function listCard(room) {
 function updateStats() {
     const res = residential();
     const count = (s) => res.filter(r => r.status === s).length;
+    $('statAll').textContent = res.length;
     $('statFree').textContent = count('free');
     $('statCleaning').textContent = count('cleaning');
     $('statBusy').textContent = count('busy');
     $('statUnavailable').textContent = count('unavailable');
+    $('stat-all').classList.toggle('active', window.AppState.filter === 'all');
     ['free', 'cleaning', 'busy', 'unavailable'].forEach(s => $('stat-' + s).classList.toggle('active', window.AppState.filter === s));
     $('clearFilter').classList.toggle('hidden', window.AppState.filter === 'all');
 
@@ -993,8 +1011,8 @@ function trow(room, sub, right) {
     const el = document.createElement('div');
     el.className = 'trow' + flashCls(room);
     el.dataset.status = room.status;
-    el.innerHTML = `<span class="tnum">${esc(room.name)}</span>
-        <div class="tmain"><span class="tg">${esc(room.guest) || 'Room ' + esc(room.name)}</span><span class="ts">${sub}</span></div>${right || ''}`;
+    el.innerHTML = `<span class="tnum">${esc(roomLabel(room))}</span>
+        <div class="tmain"><span class="tg">${esc(room.guest) || 'Room ' + esc(roomLabel(room))}</span><span class="ts">${sub}</span></div>${right || ''}`;
     makeClickable(el, room.id);
     return el;
 }
@@ -1106,8 +1124,10 @@ function openModal(roomId, preset) {
     if (!room || room.isService) return;                       // service areas cannot be edited
 
     $('modalRoomId').value = room.id;
-    $('modalRoomTitle').textContent = `Room ${room.name}`;
-    $('modalBadge').textContent = room.name;
+    $('modalRoomTitle').textContent = `Room ${roomLabel(room)}`;
+    $('modalBadge').textContent = roomLabel(room);
+    $('guest2Wrap').classList.toggle('visible', isDoubleRoom(room));
+    $('modalGuest2').value = room.guest2 || '';
     $('modalGuest').value = room.guest || '';
     $('modalCheckIn').value = room.checkIn || '';
     $('modalCheckOut').value = room.checkOut || '';
@@ -1150,27 +1170,29 @@ function saveRoomStatus(event) {
 
     const status = window.AppState.activeModalStatus;
     const guest = $('modalGuest').value.trim();
+    const guest2 = isDoubleRoom(room) ? $('modalGuest2').value.trim() : '';
     const checkIn = $('modalCheckIn').value;
     const checkOut = $('modalCheckOut').value;
 
     if (checkIn && checkOut && new Date(checkOut) < new Date(checkIn)) { showToast('Check-out is earlier than check-in'); return; }
     if (status === 'busy' && checkOut && new Date(checkOut) <= new Date()) { showToast('Check-out time is in the past — choose a later time'); return; }
 
-    const changed = status !== room.status || guest !== room.guest;
+    const changed = status !== room.status || guest !== room.guest || guest2 !== (room.guest2 || '');
     room.status = status;
     room.guest = guest;
+    room.guest2 = guest2;
     room.checkIn = checkIn;
     room.checkOut = checkOut;
     room.note = $('modalNote').value.trim();
     room.updatedAt = new Date().toISOString();
     room.auto = false;
     room.by = getUser();
-    if (changed) pushLog(room, { g: guest });
+    if (changed) pushLog(room, { g: guestLabel(room) });
 
     persistRooms([room]);
     closeModal();
     render();
-    showToast(`Room ${room.name} saved`);
+    showToast(`Room ${roomLabel(room)} saved`);
 }
 
 /* ================= Reset ================= */
@@ -1179,7 +1201,7 @@ function closeConfirmResetModal() { closeSheet('resetConfirmModal'); }
 function confirmResetAllRooms() {
     const res = residential(), now = new Date().toISOString();
     res.forEach(room => {
-        room.status = 'free'; room.guest = ''; room.checkIn = ''; room.checkOut = ''; room.note = '';
+        room.status = 'free'; room.guest = ''; room.guest2 = ''; room.checkIn = ''; room.checkOut = ''; room.note = '';
         room.updatedAt = now; room.auto = false; room.by = getUser();
         pushLog(room, { g: '' });
     });
