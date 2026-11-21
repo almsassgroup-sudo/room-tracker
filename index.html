@@ -412,6 +412,22 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
             .seg { max-width: 460px; }
             .dialog { border-radius: 34px; }
         }
+
+        /* ===== Mobile: status chips in a tidy grid (3 + 2), sized to the screen width ===== */
+        @media (max-width: 639px) {
+            .stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+            .stats .stat { grid-column: span 2; min-width: 0; justify-content: flex-start; gap: 5px; padding: 5px 8px 5px 5px; font-size: 12px; }
+            .stats .stat:nth-of-type(n+4) { grid-column: span 3; }
+            .stats .stat .dot { width: 22px; height: 22px; flex: none; }
+            .stats .stat .dot .ic { width: 12px; height: 12px; }
+            .stats .stat .n { flex: none; }
+            .stats .stat .l { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; }
+            .stats .clear-filter { grid-column: 1 / -1; justify-self: start; }
+        }
+        @media (max-width: 359px) {
+            .stats .stat { padding-right: 6px; font-size: 11.5px; }
+            .stats .stat .l { font-size: 10.5px; }
+        }
     </style>
 </head>
 <body>
@@ -446,9 +462,9 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
         <nav class="seg" aria-label="View"><button data-view-btn="plan" onclick="setView('plan')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="18" rx="2"/><rect x="14" y="3" width="7" height="8" rx="2"/><rect x="14" y="13" width="7" height="8" rx="2"/></svg><span>Plan</span></button><button data-view-btn="list" onclick="setView('list')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h2v2H3zM8 5h13v2H8zM3 11h2v2H3zM8 11h13v2H8zM3 17h2v2H3zM8 17h13v2H8z"/></svg><span>List</span></button><button data-view-btn="today" onclick="setView('today')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zm.8 5h-1.8v6l5 3 .9-1.5-4.1-2.4z"/></svg><span>Today</span></button></nav>
         <section class="stats">
             <button class="stat" data-status="free" onclick="setStatusFilter('free')" id="stat-free"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 16.2L5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z"/></svg></i><span class="n" id="statFree">0</span><span class="l">Available</span></button>
+            <button class="stat" data-status="busy" onclick="setStatusFilter('busy')" id="stat-busy"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="4.5"/><path d="M3 21c0-4.7 4-7.5 9-7.5s9 2.8 9 7.5z"/></svg></i><span class="n" id="statBusy">0</span><span class="l">Occupied</span></button>
             <button class="stat" data-status="reserved" onclick="setStatusFilter('reserved')" id="stat-reserved"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h2v2h6V2h2v2h2a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zM5 10v10h14V10z"/></svg></i><span class="n" id="statReserved">0</span><span class="l">Reserved</span></button>
             <button class="stat" data-status="cleaning" onclick="setStatusFilter('cleaning')" id="stat-cleaning"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 5.9L20 10l-5.9 2.1L12 18l-2.1-5.9L4 10l5.9-2.1z"/><path d="M19 14l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z"/></svg></i><span class="n" id="statCleaning">0</span><span class="l">Cleaning</span></button>
-            <button class="stat" data-status="busy" onclick="setStatusFilter('busy')" id="stat-busy"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="4.5"/><path d="M3 21c0-4.7 4-7.5 9-7.5s9 2.8 9 7.5z"/></svg></i><span class="n" id="statBusy">0</span><span class="l">Occupied</span></button>
             <button class="stat" data-status="unavailable" onclick="setStatusFilter('unavailable')" id="stat-unavailable"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zM5 12a7 7 0 0111.3-5.5L6.5 16.3A7 7 0 015 12zm7 7a7 7 0 01-4.3-1.5L17.5 7.7A7 7 0 0112 19z"/></svg></i><span class="n" id="statUnavailable">0</span><span class="l">Unavailable</span></button>
             <button id="clearFilter" class="clear-filter hidden" onclick="setStatusFilter('all')">Clear ✕</button>
         </section>
