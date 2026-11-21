@@ -44,10 +44,12 @@
 [data-status="cleaning"]    { --c: 245, 158, 11;  --ink: #b45309; }
 [data-status="busy"]        { --c: 244, 63, 94;   --ink: #be123c; }
 [data-status="unavailable"] { --c: 100, 116, 139; --ink: #475569; }
+[data-status="reserved"]    { --c: 99, 102, 241;  --ink: #4338ca; }
 html.dark [data-status="free"]        { --ink: #34d399; }
 html.dark [data-status="cleaning"]    { --ink: #fbbf24; }
 html.dark [data-status="busy"]        { --ink: #fb7185; }
 html.dark [data-status="unavailable"] { --ink: #a3b0c4; }
+html.dark [data-status="reserved"]    { --ink: #a5b4fc; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -444,6 +446,7 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
         <nav class="seg" aria-label="View"><button data-view-btn="plan" onclick="setView('plan')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="18" rx="2"/><rect x="14" y="3" width="7" height="8" rx="2"/><rect x="14" y="13" width="7" height="8" rx="2"/></svg><span>Plan</span></button><button data-view-btn="list" onclick="setView('list')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h2v2H3zM8 5h13v2H8zM3 11h2v2H3zM8 11h13v2H8zM3 17h2v2H3zM8 17h13v2H8z"/></svg><span>List</span></button><button data-view-btn="today" onclick="setView('today')"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zm.8 5h-1.8v6l5 3 .9-1.5-4.1-2.4z"/></svg><span>Today</span></button></nav>
         <section class="stats">
             <button class="stat" data-status="free" onclick="setStatusFilter('free')" id="stat-free"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 16.2L5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z"/></svg></i><span class="n" id="statFree">0</span><span class="l">Available</span></button>
+            <button class="stat" data-status="reserved" onclick="setStatusFilter('reserved')" id="stat-reserved"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h2v2h6V2h2v2h2a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zM5 10v10h14V10z"/></svg></i><span class="n" id="statReserved">0</span><span class="l">Reserved</span></button>
             <button class="stat" data-status="cleaning" onclick="setStatusFilter('cleaning')" id="stat-cleaning"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 5.9L20 10l-5.9 2.1L12 18l-2.1-5.9L4 10l5.9-2.1z"/><path d="M19 14l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z"/></svg></i><span class="n" id="statCleaning">0</span><span class="l">Cleaning</span></button>
             <button class="stat" data-status="busy" onclick="setStatusFilter('busy')" id="stat-busy"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="4.5"/><path d="M3 21c0-4.7 4-7.5 9-7.5s9 2.8 9 7.5z"/></svg></i><span class="n" id="statBusy">0</span><span class="l">Occupied</span></button>
             <button class="stat" data-status="unavailable" onclick="setStatusFilter('unavailable')" id="stat-unavailable"><i class="dot"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zM5 12a7 7 0 0111.3-5.5L6.5 16.3A7 7 0 015 12zm7 7a7 7 0 01-4.3-1.5L17.5 7.7A7 7 0 0112 19z"/></svg></i><span class="n" id="statUnavailable">0</span><span class="l">Unavailable</span></button>
@@ -493,6 +496,7 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
                 <span class="lbl" style="margin-top:0">Status</span>
                 <div class="opts">
                     <button type="button" class="opt" data-status="free" id="opt-free" onclick="selectModalStatus('free')"><span class="oi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 16.2L5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z"/></svg></span>Available</button>
+                    <button type="button" class="opt" data-status="reserved" id="opt-reserved" onclick="selectModalStatus('reserved')"><span class="oi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h2v2h6V2h2v2h2a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zM5 10v10h14V10z"/></svg></span>Reserved</button>
                     <button type="button" class="opt" data-status="cleaning" id="opt-cleaning" onclick="selectModalStatus('cleaning')"><span class="oi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 5.9L20 10l-5.9 2.1L12 18l-2.1-5.9L4 10l5.9-2.1z"/><path d="M19 14l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z"/></svg></span>Needs Cleaning</button>
                     <button type="button" class="opt" data-status="busy" id="opt-busy" onclick="selectModalStatus('busy')"><span class="oi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="4.5"/><path d="M3 21c0-4.7 4-7.5 9-7.5s9 2.8 9 7.5z"/></svg></span>Occupied</button>
                     <button type="button" class="opt" data-status="unavailable" id="opt-unavailable" onclick="selectModalStatus('unavailable')"><span class="oi"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zM5 12a7 7 0 0111.3-5.5L6.5 16.3A7 7 0 015 12zm7 7a7 7 0 01-4.3-1.5L17.5 7.7A7 7 0 0112 19z"/></svg></span>Unavailable</button>
@@ -513,7 +517,7 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
                     <button type="button" class="chip" onclick="addNights(3)">+3</button>
                     <button type="button" class="chip" onclick="addNights(7)">+7</button>
                 </div>
-                <p class="hint">When the check-out time arrives, an Occupied room switches to Needs Cleaning automatically. Without a check-out date nothing changes.</p>
+                <p class="hint">Reserved: when the check-in time arrives, the room switches to Occupied automatically (a check-in date is required). When the check-out time arrives, an Occupied room switches to Needs Cleaning automatically. Without a check-out date nothing changes.</p>
                 <label class="lbl" for="modalNote">Notes</label>
                 <textarea id="modalNote" rows="2" class="field" placeholder="Notes for this room…"></textarea>
                 <details id="histWrap" class="hist hidden"><summary>History</summary><ul id="histList"></ul></details>
@@ -546,7 +550,8 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
 window.AppState = { rooms: [], filter: 'all', searchQuery: '', view: 'plan', activeModalStatus: 'free', flash: new Set() };
 
 const ICON = {"check": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9.5 16.2L5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z\"/></svg>", "clean": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2l2.1 5.9L20 10l-5.9 2.1L12 18l-2.1-5.9L4 10l5.9-2.1z\"/><path d=\"M19 14l1 2.6 2.6 1-2.6 1-1 2.6-1-2.6-2.6-1 2.6-1z\"/></svg>", "user": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"7.5\" r=\"4.5\"/><path d=\"M3 21c0-4.7 4-7.5 9-7.5s9 2.8 9 7.5z\"/></svg>", "ban": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" d=\"M12 2a10 10 0 100 20 10 10 0 000-20zM5 12a7 7 0 0111.3-5.5L6.5 16.3A7 7 0 015 12zm7 7a7 7 0 01-4.3-1.5L17.5 7.7A7 7 0 0112 19z\"/></svg>", "out": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 6h10v10h-2V9.4l-9.3 9.3-1.4-1.4L14.6 8H8z\"/></svg>", "in": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M16 18H6V8h2v6.6l9.3-9.3 1.4 1.4L9.4 16H16z\"/></svg>", "plus": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z\"/></svg>", "undo": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z\"/></svg>", "clock": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" d=\"M12 2a10 10 0 100 20 10 10 0 000-20zm.8 5h-1.8v6l5 3 .9-1.5-4.1-2.4z\"/></svg>", "exit": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M10.1 15.6L11.5 17l5-5-5-5-1.4 1.4 2.6 2.6H3v2h9.7zM19 3H5a2 2 0 00-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z\"/></svg>", "search": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z\"/></svg>", "more": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"12\" r=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"2\"/><circle cx=\"19\" cy=\"12\" r=\"2\"/></svg>", "moon": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z\"/></svg>", "sun": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4.5\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" d=\"M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8\"/></svg>", "logout": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M17 7l-1.4 1.4 2.6 2.6H8v2h10.2l-2.6 2.6L17 17l5-5zM4 5h8V3H4a2 2 0 00-2 2v14a2 2 0 002 2h8v-2H4z\"/></svg>", "plan": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"18\" rx=\"2\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"8\" rx=\"2\"/><rect x=\"14\" y=\"13\" width=\"7\" height=\"8\" rx=\"2\"/></svg>", "list": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 5h2v2H3zM8 5h13v2H8zM3 11h2v2H3zM8 11h13v2H8zM3 17h2v2H3zM8 17h13v2H8z\"/></svg>", "close": "<svg class=\"ic\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" d=\"M6 6l12 12M18 6L6 18\"/></svg>", "wc": "<span class=\"ic-wc\">WC</span>"};
-const STATUS_ICON = { free: 'check', cleaning: 'clean', busy: 'user', unavailable: 'ban' };
+ICON.cal = '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h2v2h6V2h2v2h2a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h2zM5 10v10h14V10z"/></svg>';
+const STATUS_ICON = { free: 'check', reserved: 'cal', cleaning: 'clean', busy: 'user', unavailable: 'ban' };
 const THEME_COLORS = { light: '#e6f4f1', dark: '#06191b' };
 
 // Floor topology: left column / right column, top to bottom (entrance at the bottom)
@@ -564,6 +569,7 @@ const LAYOUT_PAIRS = [
 
 const STATUS = {
     free:        { title: 'Available',      short: 'Available',   icon: '✓',  hint: 'Ready for guests' },
+    reserved:    { title: 'Reserved',       short: 'Reserved',    icon: '📅', hint: 'Booked — becomes Occupied at check-in' },
     cleaning:    { title: 'Needs Cleaning', short: 'Cleaning',    icon: '🧹', hint: 'Waiting for cleaning' },
     busy:        { title: 'Occupied',       short: 'Occupied',    icon: '👤', hint: '' },
     unavailable: { title: 'Unavailable',    short: 'Unavailable', icon: '🚫', hint: 'Out of service' }
@@ -572,6 +578,7 @@ const STATUS = {
 // One-tap actions shown on every room
 const QA = {
     free:        { icon: ICON.plus,  label: 'Check in' },
+    reserved:    { icon: ICON.in,    label: 'Check in' },
     cleaning:    { icon: ICON.check, label: 'Mark clean' },
     busy:        { icon: ICON.out,   label: 'Check out' },
     unavailable: { icon: ICON.undo,  label: 'Make available' }
@@ -683,24 +690,32 @@ window.applyRemoteRooms = function (remote) {
         return room;
     });
     render();
-    runAutoCleaning();
+    runAutoSwitch();
 };
 
-/* ================= Automatic Occupied -> Needs Cleaning at check-out ================= */
+/* ================= Automatic transitions: Reserved -> Occupied at check-in, Occupied -> Needs Cleaning at check-out ================= */
 const autoBusy = new Set();
+function isDueForCheckIn(r) {
+    if (r.isService || r.status !== 'reserved') return false;
+    const d = parseDT(r.checkIn);
+    return !!d && d.getTime() <= Date.now();
+}
 function isDueForCleaning(r) {
     if (r.isService || r.status !== 'busy') return false;
     const d = parseDT(r.checkOut);
     return !!d && d.getTime() <= Date.now();
 }
-async function runAutoCleaning() {
-    if (!window.Backend || !window.Backend.autoCleaning) return;
+async function runAutoSwitch() {
+    if (!window.Backend) return;
     for (const r of window.AppState.rooms) {
-        if (!isDueForCleaning(r) || autoBusy.has(r.id)) continue;
+        const toBusy = isDueForCheckIn(r), toClean = !toBusy && isDueForCleaning(r);
+        if (!toBusy && !toClean) continue;
+        const fn = toBusy ? window.Backend.autoCheckIn : window.Backend.autoCleaning;
+        if (!fn || autoBusy.has(r.id)) continue;
         autoBusy.add(r.id);
         try {
-            const changed = await window.Backend.autoCleaning(r.id);
-            if (changed) showToast(`Room ${r.label}: check-out time reached → Needs Cleaning`);
+            const changed = await fn(r.id);
+            if (changed) showToast(toBusy ? `Room ${r.label}: check-in time reached → Occupied` : `Room ${r.label}: check-out time reached → Needs Cleaning`);
         } catch (e) {
             console.error('Auto-switch error:', e);
         } finally {
@@ -708,9 +723,9 @@ async function runAutoCleaning() {
         }
     }
 }
-setInterval(runAutoCleaning, 30000);
+setInterval(runAutoSwitch, 30000);
 setInterval(() => { if (window.AppState.view === 'today') renderToday(); }, 60000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) runAutoCleaning(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) runAutoSwitch(); });
 
 /* ================= Quick actions (+ undo) ================= */
 const snapshot = (room) => JSON.parse(JSON.stringify(room));
@@ -738,7 +753,11 @@ function clearIfDeparted(room) {
 function applyStatusChange(room, status) {
     const wasCleaning = room.status === 'cleaning';
     room.status = status;
-    if (status === 'free' && wasCleaning) clearIfDeparted(room);
+    if (status === 'free' && wasCleaning) {
+        clearIfDeparted(room);
+        const ci = parseDT(room.checkIn);
+        if (ci && ci > new Date()) room.status = 'reserved';   // future arrival already entered
+    }
     room.updatedAt = new Date().toISOString();
     room.auto = false;
     pushLog(room);
@@ -748,7 +767,7 @@ function quickAction(ev, id) {
     ev.stopPropagation();
     const room = window.AppState.rooms.find(r => r.id === id);
     if (!room || room.isService) return;
-    if (room.status === 'free') { openModal(id, 'busy'); return; }
+    if (room.status === 'free' || room.status === 'reserved') { openModal(id, 'busy'); return; }
 
     const snap = snapshot(room);
     const target = room.status === 'busy' ? 'cleaning' : 'free';
@@ -820,6 +839,10 @@ function planTile(room, side) {
         guestsOf(room).forEach(g => lines.push([g, false]));
         if (room.checkOut) lines.push(['Out ' + fmtDT(room.checkOut), true]);
         else if (room.note) lines.push([room.note, true]);
+    } else if (st === 'reserved') {
+        lines.push([guestText(room) || 'Reserved', false]);
+        if (room.checkIn) lines.push(['In ' + fmtDT(room.checkIn), true]);
+        else if (room.note) lines.push([room.note, true]);
     } else if (upcomingArrival(room)) {
         lines.push([guestText(room) || 'Reserved', false]);
         lines.push(['In ' + fmtDT(room.checkIn), true]);
@@ -868,6 +891,9 @@ function listCard(room) {
         body = `<dl class="lbody">${gRows}
             <div class="row"><dt>Check-in</dt><dd>${fmtDT(room.checkIn) || '—'}</dd></div>
             <div class="row"><dt>Check-out</dt><dd>${fmtDT(room.checkOut) || '—'}</dd></div></dl>`;
+    } else if (st === 'reserved') {
+        body = `<dl class="lbody"><div class="row"><dt>Check-in</dt><dd>${fmtDT(room.checkIn) || '—'}</dd></div>
+            <div class="row"><dt>Check-out</dt><dd>${fmtDT(room.checkOut) || '—'}</dd></div>${gRows}</dl>`;
     } else if (upcomingArrival(room)) {
         body = `<dl class="lbody"><div class="row"><dt>Arriving</dt><dd>${fmtDT(room.checkIn)}</dd></div>${gRows}</dl>`;
     } else if (st === 'cleaning' && room.auto) {
@@ -892,10 +918,11 @@ function updateStats() {
     const res = residential();
     const count = (x) => res.filter(r => r.status === x).length;
     $('statFree').textContent = count('free');
+    $('statReserved').textContent = count('reserved');
     $('statCleaning').textContent = count('cleaning');
     $('statBusy').textContent = count('busy');
     $('statUnavailable').textContent = count('unavailable');
-    ['free', 'cleaning', 'busy', 'unavailable'].forEach(x => $('stat-' + x).classList.toggle('active', window.AppState.filter === x));
+    ['free', 'reserved', 'cleaning', 'busy', 'unavailable'].forEach(x => $('stat-' + x).classList.toggle('active', window.AppState.filter === x));
     $('clearFilter').classList.toggle('hidden', window.AppState.filter === 'all');
 
     const nClean = count('cleaning');
@@ -1046,13 +1073,14 @@ function openModal(roomId, preset) {
     $('histWrap').open = false;
 
     selectModalStatus(preset || room.status);
+    if (preset === 'busy' && room.status === 'reserved') $('modalCheckIn').value = toLocalInput(new Date());   // arrived: check in now
     openSheet('statusModal');
 }
 function closeModal() { closeSheet('statusModal'); }
 
 function selectModalStatus(status) {
     window.AppState.activeModalStatus = status;
-    ['free', 'cleaning', 'busy', 'unavailable'].forEach(s => $('opt-' + s).classList.toggle('on', s === status));
+    ['free', 'reserved', 'cleaning', 'busy', 'unavailable'].forEach(s => $('opt-' + s).classList.toggle('on', s === status));
     $('modalBadge').dataset.status = status;
     if (status === 'busy' && !$('modalCheckIn').value) $('modalCheckIn').value = toLocalInput(new Date());
 }
@@ -1076,7 +1104,9 @@ function saveRoomStatus(event) {
     const checkOut = $('modalCheckOut').value;
 
     if (checkIn && checkOut && new Date(checkOut) < new Date(checkIn)) { showToast('Check-out is earlier than check-in'); return; }
-    if (status === 'busy' && checkOut && new Date(checkOut) <= new Date()) { showToast('Check-out time is in the past — choose a later time'); return; }
+    if ((status === 'busy' || status === 'reserved') && checkOut && new Date(checkOut) <= new Date()) { showToast('Check-out time is in the past — choose a later time'); return; }
+    if (status === 'reserved' && !checkIn) { showToast('Reserved needs a check-in date and time'); return; }
+    if (status === 'reserved' && new Date(checkIn) <= new Date()) { showToast('Check-in time is in the past — choose a later time or use Occupied'); return; }
 
     const changed = status !== room.status || guest !== room.guest || guest2 !== (room.guest2 || '');
     room.status = status;
@@ -1210,6 +1240,26 @@ async function boot() {
                 log: Array.isArray(r.log) ? r.log.slice(-12) : []
             }));
             await batch.commit();
+        },
+
+        // Reserved -> Occupied once check-in time has arrived (transaction: safe with several open devices).
+        async autoCheckIn(id) {
+            const ref = doc(db, 'rooms', id);
+            return await runTransaction(db, async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists()) return false;
+                const d = snap.data();
+                const t = d.checkIn ? new Date(d.checkIn).getTime() : NaN;
+                if (d.status !== 'reserved' || isNaN(t) || t > Date.now()) return false;
+                const now = new Date().toISOString();
+                tx.update(ref, {
+                    status: 'busy',
+                    updatedAt: now,
+                    auto: true,
+                    log: [...(Array.isArray(d.log) ? d.log : []), { t: now, s: 'busy', a: 1 }].slice(-12)
+                });
+                return true;
+            });
         },
 
         // Occupied -> Needs Cleaning once check-out time has passed.
