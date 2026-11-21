@@ -415,15 +415,15 @@ html.dark .login-msg.err, html.dark .login-error { color: #fb7185; }
 
         /* ===== Mobile: status chips in a tidy grid (3 + 2), sized to the screen width ===== */
         @media (max-width: 639px) {
-            .stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
-            .stats .stat { grid-column: span 2; min-width: 0; justify-content: flex-start; gap: 5px; padding: 5px 8px 5px 5px; font-size: 12px; }
-            .stats .stat:nth-of-type(4) { grid-column: 2 / span 2; }
-            .stats .stat:nth-of-type(5) { grid-column: 4 / span 2; }
+            .stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+            .stats .stat { flex: 0 0 calc((100% - 12px) / 3); min-width: 0; justify-content: flex-start; gap: 5px; padding: 5px 8px 5px 5px; font-size: 12px; }
+            .stats .stat:nth-of-type(5) { flex: 0 0 auto; padding-right: 12px; }
             .stats .stat .dot { width: 22px; height: 22px; flex: none; }
             .stats .stat .dot .ic { width: 12px; height: 12px; }
             .stats .stat .n { flex: none; }
             .stats .stat .l { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; }
-            .stats .clear-filter { grid-column: 1 / -1; justify-self: start; }
+            .stats .stat:nth-of-type(5) .l { overflow: visible; }
+            .stats .clear-filter { flex: 0 0 100%; text-align: left; }
         }
         @media (max-width: 359px) {
             .stats .stat { padding-right: 6px; font-size: 11.5px; }
